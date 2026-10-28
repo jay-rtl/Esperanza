@@ -59,7 +59,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,t
 .header-actions{display:flex;align-items:center;gap:27px}
 .header-cta .button{padding:12px 18px;min-height:44px;gap:28px;font-size:11px}
 .menu-toggle,.menu-close{display:inline-flex;align-items:center;gap:15px;border:0;background:transparent;padding:12px 0 12px 12px;min-height:48px;min-width:83px;font-size:12px;color:var(--ink)}
-.menu-toggle[hidden]{visibility:hidden;display:inline-flex}
+.menu-toggle{display:none}
+.menu-toggle[hidden]{visibility:hidden}
 .menu-icon{position:relative;width:25px;height:18px;display:inline-block;flex-shrink:0}
 .menu-icon i{position:absolute;left:0;top:4px;width:25px;height:1px;background:currentColor;transition:transform .38s var(--ease),width .3s}
 .menu-icon i:last-child{top:12px;width:18px;left:auto;right:0}
@@ -332,7 +333,7 @@ input[aria-invalid=true]{border-color:#9f3a3a}
 
 @media(min-width:1700px){.hero-visual{min-height:760px}.hero-copy{padding-top:110px}.hero-note{margin-top:65px}}
 @media(max-width:1100px){
- .desktop-nav{gap:23px;margin-right:5px}.header-actions{gap:20px}.header-cta{display:none}
+ .desktop-nav{gap:clamp(12px,1.6vw,23px);margin-right:0}.desktop-nav a{font-size:11px}.site-header{gap:24px}.header-actions{gap:20px}.header-cta{display:none}
  .hero-title{font-size:6.5vw}.hero-copy{padding-top:55px;padding-bottom:35px}.hero-visual{min-height:560px;border-bottom-left-radius:80px}.hero-note{margin-top:35px}
  .hero-actions{gap:18px}.hero-actions .button{gap:20px;padding-inline:17px}.hero-actions .text-link{gap:16px}
  .portrait-intro{left:20px;right:20px;bottom:20px;padding:18px}.portrait-intro p{font-size:26px}.portrait-intro>a{width:40px;height:40px}
@@ -346,7 +347,7 @@ input[aria-invalid=true]{border-color:#9f3a3a}
 @media(max-width:760px){
  :root{--gutter:24px;--space:65px;--header-height:96px}
  body{font-size:14px}h1{font-size:56px}h2{font-size:42px}.eyebrow{font-size:9px;letter-spacing:.14em;margin-bottom:22px}.lead{font-size:15px}
- .site-header{min-height:96px;padding:12px var(--gutter);gap:15px}.brand-logo{width:160px}.desktop-nav{display:none}.header-actions{margin-left:auto}.menu-toggle,.menu-close{gap:12px;font-size:11px;padding-left:8px;min-width:75px}.menu-icon{width:24px}
+ .site-header{min-height:96px;padding:12px var(--gutter);gap:15px}.brand-logo{width:160px}.desktop-nav{display:none}.header-actions{margin-left:auto}.menu-toggle{display:inline-flex}.menu-toggle,.menu-close{gap:12px;font-size:11px;padding-left:8px;min-width:75px}.menu-icon{width:24px}
  .menu-shell{padding:12px var(--gutter) 15px}.menu-top{min-height:72px;padding-bottom:12px}.menu-content{display:flex;flex-direction:column;gap:0;align-items:stretch;padding:28px 0 30px}.menu-aside>.menu-message,.menu-aside>p:not(.eyebrow),.menu-email{display:none}.menu-aside .eyebrow{font-size:9px;margin-bottom:15px}#main-nav a{min-height:69px;font-size:34px;gap:20px;padding:13px 0}.nav-index{font-size:9px}.nav-arrow{font-size:25px}.menu-bottom{font-size:9px;flex-wrap:wrap;gap:4px 18px;padding-top:13px}.menu-bottom>span:last-child{display:none}.menu-bottom>a{font-size:10px;gap:15px}.nojs-navigation{gap:4px 20px;font-size:12px}
  .hero{grid-template-columns:1fr}.hero-copy{padding:42px var(--gutter) 35px}.hero-copy .eyebrow{font-size:8px;letter-spacing:.12em;margin-bottom:26px}.hero-title{font-size:clamp(48px,10.8vw,72px);line-height:1.06;margin-bottom:25px}.hero-description{font-size:14px;max-width:350px;margin-bottom:24px}.hero-actions{gap:20px;flex-wrap:wrap}.hero-actions .button{font-size:11px;gap:20px;padding:15px 18px}.hero-actions .text-link{font-size:11px;gap:17px}.hero-note{margin-top:28px;gap:12px}.hero-note .botanical{width:32px;height:39px}.hero-note p{font-size:11px}.hero-note p>span{font-size:9px}.hero-visual{min-height:440px;height:440px;border-radius:0 0 0 70px;margin-left:var(--gutter)}.hero-visual>img{object-position:center 34%}.portrait-intro{left:22px;right:22px;bottom:22px;padding:18px 20px}.portrait-intro .eyebrow{font-size:7px;margin-bottom:5px}.portrait-intro p{font-size:29px}.portrait-intro div>span:last-child{font-size:9px}.portrait-intro>a{width:42px;height:42px}
  .principles{display:grid;grid-template-columns:1fr 1fr;gap:17px 15px;padding-block:26px}.principles p{grid-column:1/-1;font-size:20px;margin-bottom:4px}.principles>span{font-size:8px;padding-left:13px;letter-spacing:.1em}.principles>span:before{top:6px}

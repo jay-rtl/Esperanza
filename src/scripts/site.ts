@@ -14,6 +14,7 @@ const menu = document.querySelector<HTMLButtonElement>('.menu-toggle');
 const dialog = document.querySelector<HTMLDialogElement>('#navigation-dialog');
 const closeButton = document.querySelector<HTMLButtonElement>('.menu-close');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const mobileMenu = window.matchMedia('(max-width: 760px)');
 let closeTimer: ReturnType<typeof setTimeout> | undefined;
 let openingFrame = 0;
 let closing = false;
@@ -26,7 +27,8 @@ function finishMenuClose() {
  document.documentElement.classList.remove('menu-open');
  menu.setAttribute('aria-expanded', 'false');
  closing = false;
- menu.focus({preventScroll:true});
+ const returnFocus=mobileMenu.matches?menu:document.querySelector<HTMLElement>('.desktop-nav a[aria-current="page"]')||document.querySelector<HTMLElement>('.desktop-nav a');
+ returnFocus?.focus({preventScroll:true});
 }
 
 function closeMenu() {
@@ -42,6 +44,7 @@ function closeMenu() {
 if (menu && dialog && closeButton) {
  menu.hidden = false;
  menu.addEventListener('click', () => {
+  if(!mobileMenu.matches)return;
   if (dialog.open) {closeMenu();return;}
   clearTimeout(closeTimer);
   closing = false;
@@ -72,6 +75,9 @@ if (menu && dialog && closeButton) {
   closing=false;
  });
  reducedMotion.addEventListener('change',()=>{if(closing&&reducedMotion.matches)finishMenuClose();});
+ mobileMenu.addEventListener('change',()=>{
+  if(!mobileMenu.matches&&dialog.open){cancelAnimationFrame(openingFrame);finishMenuClose();}
+ });
 }
 
 gsap.registerPlugin(ScrollTrigger);

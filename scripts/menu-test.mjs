@@ -2,16 +2,33 @@ import {chromium,expect} from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import assert from 'node:assert/strict';
 import {writeFile,mkdir} from 'node:fs/promises';
-const base=process.env.AUDIT_URL||'http://127.0.0.1:4322';
+const base=(process.env.AUDIT_URL||'http://127.0.0.1:4322').replace(/\/$/,'');
+const servicesPath=new URL(base+'/services/').pathname;
 const browser=await chromium.launch();
 await mkdir('docs/screenshots',{recursive:true});
 const results=[];
-for(const [width,height] of [[1440,1000],[768,1000],[390,844],[320,568]]){
+for(const [width,height] of [[1440,1000],[1024,1000],[768,1000],[761,1000],[760,1000],[390,844],[320,568]]){
  const context=await browser.newContext({viewport:{width,height}});
  const page=await context.newPage();
  await page.goto(base);
  const toggle=page.getByRole('button',{name:'Menu',exact:true});
+ if(width>760){
+  await expect(toggle).not.toBeVisible();
+  await expect(page.locator('.desktop-nav')).toBeVisible();
+  assert.equal(await page.locator('.desktop-nav a').count(),6);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  assert.equal(await page.locator('.desktop-nav').evaluate(nav=>nav.getBoundingClientRect().right<=innerWidth),true);
+  await page.evaluate(()=>scrollTo({top:800,behavior:'instant'}));
+  assert.equal(await page.locator('.site-header').evaluate(el=>Math.abs(el.getBoundingClientRect().top)<1),true);
+  await page.screenshot({path:`docs/screenshots/desktop-navigation-${width}.png`});
+  await page.locator(`.desktop-nav a[href="${servicesPath}"]`).click();
+  await expect(page).toHaveURL(base+'/services/');
+  await context.close();
+  results.push({width,height,status:'PASS',checks:['desktop toggle hidden','six desktop page links','no horizontal overflow','fixed header while scrolled','desktop route navigation']});
+  continue;
+ }
  await expect(toggle).toBeVisible();
+ await expect(page.locator('.desktop-nav')).not.toBeVisible();
  assert.equal(await page.evaluate(()=>document.querySelector('#main').getBoundingClientRect().top>=document.querySelector('.site-header').getBoundingClientRect().bottom),true);
  await page.evaluate(()=>window.scrollTo({top:800,behavior:'instant'}));
  assert.equal(await page.locator('.site-header').evaluate(el=>Math.abs(el.getBoundingClientRect().top)<1),true);
@@ -41,7 +58,7 @@ for(const [width,height] of [[1440,1000],[768,1000],[390,844],[320,568]]){
  }
  await toggle.click();await page.waitForTimeout(750);
  await page.screenshot({path:`docs/screenshots/menu-${width}.png`,fullPage:false});
- await page.locator('#main-nav a[href="/services/"]').click();
+ await page.locator(`#main-nav a[href="${servicesPath}"]`).click();
  await expect(page).toHaveURL(base+'/services/');
  assert.equal(await page.locator('h1').count(),1);
  await page.locator('.services-index a[href="#service-2"]').click();
@@ -51,6 +68,12 @@ for(const [width,height] of [[1440,1000],[768,1000],[390,844],[320,568]]){
  await expect(page.getByRole('dialog')).toBeVisible();
  assert.equal(await page.locator('#navigation-dialog').evaluate(e=>getComputedStyle(e).transitionDuration),'0s');
  await page.keyboard.press('Escape');await expect(page.locator('#navigation-dialog')).not.toBeVisible();
+ await page.getByRole('button',{name:'Menu',exact:true}).click();
+ await page.setViewportSize({width:1440,height:1000});
+ await expect(page.locator('#navigation-dialog')).not.toBeVisible();
+ await expect(page.locator('.menu-toggle')).not.toBeVisible();
+ assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('menu-open')),false);
+ await expect(page.locator('.desktop-nav a[aria-current="page"]')).toBeFocused();
  await context.close();
  results.push({width,height,status:'PASS',checks:['fixed header while scrolled','initial content and anchor clearance','icon/panel animation','zero modal axe findings','dialog focus containment','Escape and close button','focus and scroll restoration','three rapid reopen/close cycles','local link navigation','reduced motion']});
 }

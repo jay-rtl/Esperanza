@@ -39,7 +39,7 @@ const current=(href:string)=>canonicalPath===href?'page':undefined;
   <header class="site-header">
    <a href={withBase("/")} class="brand" aria-label="Esperanza Coaching Collective home"><Brand/></a>
    <nav class="desktop-nav" aria-label="Primary navigation">
-    {[['/','Home'],['/about/','About'],['/services/','Services'],['/contact/','Contact']].map(([href,label])=><a href={withBase(href)} aria-current={current(href)}>{label}</a>)}
+    {[['/','Home'],['/about/','About'],['/services/','Services'],['/why-us/','Why Esperanza'],['/reviews/','Reviews'],['/contact/','Contact']].map(([href,label])=><a href={withBase(href)} aria-current={current(href)}>{label}</a>)}
    </nav>
    <div class="header-actions"><div class="header-cta"><Booking label="Let’s talk"/></div>
     <button class="menu-toggle" aria-label="Menu" aria-controls="navigation-dialog" aria-expanded="false" hidden><span>Menu</span><span class="menu-icon" aria-hidden="true"><i></i><i></i></span></button>
