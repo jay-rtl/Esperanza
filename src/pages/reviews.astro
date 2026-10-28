@@ -1,0 +1,11 @@
+---
+import {withBase} from '../utils/paths';
+import Layout from '../layouts/Layout.astro';
+import Invitation from '../components/Invitation.astro';
+import Botanical from '../components/Botanical.astro';
+---
+<Layout title="Client experiences" description="Client experiences from Esperanza Coaching Collective. Approved testimonials are pending publication.">
+ <section class="section reviews-heading"><p class="eyebrow">Client experiences</p><h1>Every journey<br/>has its <em>own story.</em></h1><Botanical/><p class="lead">There is space for yours, too.</p></section>
+ <section class="section stories-pending"><div class="story-placeholder-label"><span class="eyebrow">With care &amp; permission</span><span class="large-index" aria-hidden="true">01</span></div><div><h2>Stories are personal.<br/><em>Sharing is a choice.</em></h2><p class="pending-label">Approved testimonials pending</p><p>Approved client testimonials were not available in the source website. This space is reserved for experiences shared with permission.</p><a class="text-link" href={withBase("/about/")}>Meet the person behind Esperanza <span aria-hidden="true">↗</span></a></div></section>
+ <Invitation/>
+</Layout>

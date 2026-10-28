@@ -1,0 +1,6 @@
+---
+import Booking from './Booking.astro';
+import Botanical from './Botanical.astro';
+const {eyebrow='Your next chapter',title='A conversation is',accent='a beginning.'}=Astro.props;
+---
+<section class="section invitation"><Botanical/><p class="eyebrow">{eyebrow}</p><h2>{title}<br/><em>{accent}</em></h2><Booking/></section>

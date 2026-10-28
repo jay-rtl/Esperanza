@@ -1,0 +1,4 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {readdir,readFile} from 'node:fs/promises';
+async function files(dir){let all=[];for(const e of await readdir(dir,{withFileTypes:true})){const p=dir+'/'+e.name;if(e.isDirectory())all.push(...await files(p));else all.push(p);}return all;}
+test('production output never loads or navigates to the original website',async()=>{for(const file of await files('dist')){if(!/\.(html|js|css|xml|txt)$/.test(file))continue;const content=await readFile(file,'utf8');assert.doesNotMatch(content,/(?:https?:)?\/\/(?:www\.)?esperanzacoachingcollective\.com/i,file);assert.doesNotMatch(content,/<iframe/i,file);}});
+test('preview robots and sitemap do not expose staging URLs',async()=>{assert.match(await readFile('dist/robots.txt','utf8'),/Disallow: \//);assert.doesNotMatch(await readFile('dist/sitemap.xml','utf8'),/<url>/);});

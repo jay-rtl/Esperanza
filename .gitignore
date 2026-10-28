@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+reference/
+.deployment/
+docs/screenshots/
+docs/*results.json
+docs/lighthouse-mobile.json
+docs/dependency-audit.json
+test-results/
+playwright-report/

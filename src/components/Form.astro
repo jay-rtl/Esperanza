@@ -1,0 +1,20 @@
+---
+import {withBase} from '../utils/paths';
+import {config} from '../data/config';
+const {kind='contact'}=Astro.props;
+const guide=kind==='guide';
+const endpoint=guide?config.guide:config.contact;
+---
+<form class="inquiry-form" method="post" data-endpoint={endpoint} data-kind={kind} novalidate>
+ <p class="form-notice">{endpoint?'Please share only what is needed to arrange a conversation. Avoid medical records or sensitive health details.':guide?'The free guide is not available to request online yet. No email address will be sent or saved.':'Online inquiries are not connected yet. You can contact Michelle directly using the email or phone listed here. This form will not send or save your details.'}</p>
+ <div class="form-grid">
+ <div class="field"><label for={`${kind}-name`}>First name <span>(required)</span></label><input id={`${kind}-name`} name="firstName" autocomplete="given-name" required maxlength="80" aria-describedby={`${kind}-name-error`}/><span class="error" id={`${kind}-name-error`}></span></div>
+ <div class="field"><label for={`${kind}-email`}>Email address <span>(required)</span></label><input id={`${kind}-email`} name="email" type="email" autocomplete="email" required maxlength="254" aria-describedby={`${kind}-email-error`}/><span class="error" id={`${kind}-email-error`}></span></div>
+ </div>
+ {guide?<div class="field"><label for="guide-language">Guide language</label><select id="guide-language" name="language"><option value="en">English</option><option value="es">Español</option></select></div>:<><div class="field"><label for="contact-phone">Phone number <span>(optional)</span></label><input id="contact-phone" name="phone" type="tel" autocomplete="tel" maxlength="40"/></div><div class="field"><label for="contact-message">Message <span>(optional, 180 characters maximum)</span></label><textarea id="contact-message" name="message" maxlength="180" rows="4" aria-describedby="message-help"></textarea><small id="message-help">Please don’t include sensitive health information.</small></div></>}
+ <div class="honeypot" aria-hidden="true"><label>Leave this field empty<input name="website" tabindex="-1" autocomplete="off"/></label></div>
+ {endpoint&&<div class="field consent"><label><input name="consent" type="checkbox" required aria-describedby={`${kind}-consent-error`}/> I have read the <a href={withBase("/privacy/")}>privacy notice</a> and agree to be contacted about this request.</label><span class="error" id={`${kind}-consent-error`}></span></div>}
+ <button class="button" type="button" data-submit>{endpoint?(guide?'Request the free guide':'Send your inquiry'):'Check availability'}<span aria-hidden="true">↗</span></button>
+ <p role="status" aria-live="polite" class="form-status"></p>
+ <noscript><p>Online submissions require JavaScript. Please contact Michelle by email or phone.</p></noscript>
+</form>

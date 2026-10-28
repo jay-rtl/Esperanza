@@ -1,0 +1,13 @@
+---
+import {withBase} from '../utils/paths';
+import Layout from '../layouts/Layout.astro';
+import Invitation from '../components/Invitation.astro';
+import Botanical from '../components/Botanical.astro';
+import {biography} from '../data/content';
+---
+<Layout title="Meet Michelle Savage" description="Meet Michelle Savage and learn about the personal journey and coaching philosophy behind Esperanza Coaching Collective.">
+ <section class="section about-heading"><p class="eyebrow">The person behind Esperanza</p><h1>Experience,<br/>with <em>empathy.</em></h1><div class="about-heading-note"><Botanical/><p>Professional understanding.<br/>A deeply personal journey.</p></div></section>
+ <section class="section about-story"><figure class="about-photo"><img src={withBase("/images/portrait.webp")} width="715" height="1024" alt="Michelle Savage, founder of Esperanza Coaching Collective"/><figcaption><span>Michelle Savage</span><span>Coach &amp; Couples Therapist</span></figcaption></figure><div class="about-biography"><p class="eyebrow">01 / Meet your coach</p><h2>Hi, I’m <em>Michelle.</em></h2><p>{biography[0]}</p><div class="biography-chapter"><p class="eyebrow">02 / A lived understanding</p><h3>Before I was a coach,<br/>I was a patient.</h3><p>{biography[1]}</p></div><div class="biography-chapter"><p class="eyebrow">03 / The heart of Esperanza</p><p>{biography[2]}</p></div></div></section>
+ <section class="section philosophy"><div><p class="eyebrow">The work we do together</p><h2>A space to reconnect.<br/><em>A plan to move forward.</em></h2></div><div><p>This is a coaching program, not therapy. The program focuses on present and future growth, rather than diagnosis or clinical treatment.</p><a class="text-link" href={withBase("/services/")}>Find the right support <span aria-hidden="true">↗</span></a></div></section>
+ <Invitation/>
+</Layout>

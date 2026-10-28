@@ -1,0 +1,2 @@
+export function httpsUrl(value: string | undefined){try{const url=new URL(value||'');return url.protocol==='https:'&&!/(^|\.)esperanzacoachingcollective\.com$/i.test(url.hostname)?url.href:'';}catch{return '';}}
+export const config={booking:httpsUrl(import.meta.env.PUBLIC_BOOKING_URL),community:httpsUrl(import.meta.env.PUBLIC_COMMUNITY_URL),fjr:httpsUrl(import.meta.env.PUBLIC_FJR_URL),contact:httpsUrl(import.meta.env.PUBLIC_CONTACT_ENDPOINT),guide:httpsUrl(import.meta.env.PUBLIC_GUIDE_ENDPOINT)};

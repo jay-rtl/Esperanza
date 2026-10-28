@@ -1,0 +1,3 @@
+import type {APIRoute} from 'astro';
+import {withBase} from '../utils/paths';
+export const GET:APIRoute=()=>{const site=import.meta.env.SITE_URL;const routes=['/','/about/','/services/','/contact/','/why-us/','/reviews/','/free-guide/','/privacy/'];const urls=site&&import.meta.env.PUBLIC_LAUNCH_READY==='true'?routes.map(r=>`<url><loc>${new URL(withBase(r),site).href.replace(/&/g,'&amp;')}</loc></url>`).join(''):'';return new Response(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`,{headers:{'Content-Type':'application/xml'}})};

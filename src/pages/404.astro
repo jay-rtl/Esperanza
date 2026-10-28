@@ -1,0 +1,6 @@
+---
+import {withBase} from '../utils/paths';
+import Layout from '../layouts/Layout.astro';
+import Botanical from '../components/Botanical.astro';
+---
+<Layout title="Page not found" description="Return to Esperanza Coaching Collective."><section class="section not-found"><span class="error-code">404</span><p class="eyebrow">A different path</p><h1>Let’s find<br/><em>your way back.</em></h1><p>The page you’re looking for could not be found.</p><a class="button" href={withBase("/")}>Back to Esperanza <span aria-hidden="true">↗</span></a><Botanical/></section></Layout>

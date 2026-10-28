@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Form from '../components/Form.astro';
+import Botanical from '../components/Botanical.astro';
+import {config} from '../data/config';
+import Booking from '../components/Booking.astro';
+---
+<Layout title="Contact Michelle & arrange a consultation" description="Contact Esperanza Coaching Collective to ask questions about coaching or discuss a consultation with Michelle Savage.">
+ <section class="section contact-heading"><p class="eyebrow">You don’t need to have all the answers.</p><h1>Let’s start with<br/><em>a conversation.</em></h1><p class="lead">A private space to understand your situation, ask questions, and see if this support is right for you.</p></section>
+ <section class="section contact-layout"><div class="contact-aside"><p class="eyebrow">A personal connection</p><h2>A note.<br/>A question.<br/><em>A beginning.</em></h2><div class="contact-info"><div><span class="eyebrow">Email Michelle</span><a href="mailto:info@esperanzacoachingcollective.com">info@esperanzacoachingcollective.com</a></div><div><span class="eyebrow">Call</span><a href="tel:+14077215984">+1 407-721-5984</a></div></div><p class="small">Coaching inquiries only. Please avoid sending sensitive medical information by email or through this form.</p><Botanical/></div><div class="form-panel"><div class="form-panel-heading"><p class="eyebrow">Send a note</p><span aria-hidden="true">↗</span></div><Form/></div></section>
+ <section id="consultation" class="section consultation-section"><div><p class="eyebrow">Take the next step</p><h2>A little time.<br/><em>A little clarity.</em></h2></div><div>{config.booking?<Booking label="Open consultation booking"/>:<><p>Online booking is awaiting account approval. Contact Michelle directly to ask about arranging a consultation.</p><a class="button" href="mailto:info@esperanzacoachingcollective.com">Email Michelle <span aria-hidden="true">↗</span></a></>}</div></section>
+ <section class="section community-details" id="community"><p class="eyebrow">The free Facebook community</p><h2>Others understand<br/><em>this journey, too.</em></h2>{config.community?<a class="text-link" href={config.community} target="_blank" rel="noopener noreferrer">Visit the Facebook community <span aria-hidden="true">↗</span></a>:<p>The community link is awaiting approval for this website. <a class="text-link" href="mailto:info@esperanzacoachingcollective.com">Ask Michelle about joining <span aria-hidden="true">↗</span></a></p>}</section>
+</Layout>

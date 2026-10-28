@@ -1,0 +1,11 @@
+---
+import {withBase} from '../utils/paths';
+import Layout from '../layouts/Layout.astro';
+import Invitation from '../components/Invitation.astro';
+import {intro,biography} from '../data/content';
+---
+<Layout title="Why Esperanza — our coaching approach" description="Learn about Esperanza’s client-centered bilingual approach, combining lived experience and fertility-informed couples coaching.">
+ <section class="section approach-heading"><p class="eyebrow">The Esperanza approach</p><h1>Support that sees<br/><em>the whole of you.</em></h1><p class="lead">Compassionate, client-centered and bi-lingual coaching. English / Español.</p><div class="approach-principles"><span>Understanding</span><span>Connection</span><span>Clarity</span></div></section>
+ <section class="section approach-story"><div class="approach-image"><img src={withBase("/images/portrait.webp")} width="715" height="1024" alt="Michelle Savage outdoors" loading="lazy"/><p>Michelle Savage<br/><span>Coach &amp; Couples Therapist</span></p></div><div class="approach-articles"><article><div class="pillar-label"><span>01</span><p class="eyebrow">Your story comes first</p></div><h2>A space to<br/><em>feel heard.</em></h2><p>{intro}</p></article><article><div class="pillar-label"><span>02</span><p class="eyebrow">More than an understanding</p></div><h2>Experience that<br/><em>walks beside you.</em></h2><p>{biography[2]}</p></article><article><div class="pillar-label"><span>03</span><p class="eyebrow">A clearly defined focus</p></div><h2>Present support.<br/><em>Future possibility.</em></h2><p>This is a coaching program (not therapy). It focuses on present and future growth — not diagnosis or clinical treatment.</p></article></div></section>
+ <Invitation title="Your story." accent="Your next chapter."/>
+</Layout>

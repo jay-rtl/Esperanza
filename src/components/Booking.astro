@@ -1,0 +1,6 @@
+---
+import {withBase} from '../utils/paths';
+import {config} from '../data/config';
+const {label='Book a consultation', light=false}=Astro.props;
+---
+<a class:list={['button',{light}]} href={config.booking||withBase('/contact/#consultation')} target={config.booking?'_blank':undefined} rel={config.booking?'noopener noreferrer':undefined}>{label}<span aria-hidden="true">↗</span></a>

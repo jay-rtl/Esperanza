@@ -1,0 +1,57 @@
+import {chromium,expect} from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import assert from 'node:assert/strict';
+import {writeFile,mkdir} from 'node:fs/promises';
+const base=process.env.AUDIT_URL||'http://127.0.0.1:4322';
+const browser=await chromium.launch();
+await mkdir('docs/screenshots',{recursive:true});
+const results=[];
+for(const [width,height] of [[1440,1000],[768,1000],[390,844],[320,568]]){
+ const context=await browser.newContext({viewport:{width,height}});
+ const page=await context.newPage();
+ await page.goto(base);
+ const toggle=page.getByRole('button',{name:'Menu',exact:true});
+ await expect(toggle).toBeVisible();
+ assert.equal(await page.evaluate(()=>document.querySelector('#main').getBoundingClientRect().top>=document.querySelector('.site-header').getBoundingClientRect().bottom),true);
+ await page.evaluate(()=>window.scrollTo({top:800,behavior:'instant'}));
+ assert.equal(await page.locator('.site-header').evaluate(el=>Math.abs(el.getBoundingClientRect().top)<1),true);
+ assert.equal(await page.locator('.site-header').evaluate(el=>getComputedStyle(el).position),'fixed');
+ await page.screenshot({path:`docs/screenshots/fixed-header-${width}.png`});
+ const before=await page.evaluate(()=>scrollY);
+ await toggle.click();
+ await expect(page.getByRole('dialog')).toBeVisible();
+ await expect(page.locator('.menu-close')).toBeFocused();
+ await page.waitForTimeout(750);
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+ assert.equal(await page.locator('#navigation-dialog').evaluate(e=>e.scrollWidth<=e.clientWidth),true);
+ const axe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();
+ assert.deepEqual(axe.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[]);
+ // The last focusable link must wrap back into the modal, never into the page.
+ await page.locator('.menu-bottom a').focus();
+ await page.keyboard.press('Tab');
+ assert.equal(await page.evaluate(()=>!!document.activeElement?.closest('dialog')),true);
+ await page.locator('.menu-close').focus();
+ await page.keyboard.press('Escape');
+ await expect(page.getByRole('dialog')).not.toBeVisible();
+ await expect(toggle).toBeFocused();
+ assert.equal(await page.evaluate(()=>scrollY),before);
+ for(let i=0;i<3;i++){
+  await toggle.click();await page.locator('.menu-close').click();
+  await expect(page.locator('#navigation-dialog')).not.toBeVisible();
+ }
+ await toggle.click();await page.waitForTimeout(750);
+ await page.screenshot({path:`docs/screenshots/menu-${width}.png`,fullPage:false});
+ await page.locator('#main-nav a[href="/services/"]').click();
+ await expect(page).toHaveURL(base+'/services/');
+ assert.equal(await page.locator('h1').count(),1);
+ await page.locator('.services-index a[href="#service-2"]').click();
+ await expect.poll(()=>page.evaluate(()=>Math.abs(document.querySelector('#service-2').getBoundingClientRect().top-document.querySelector('.site-header').getBoundingClientRect().bottom-24))).toBeLessThan(2);
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await page.getByRole('button',{name:'Menu',exact:true}).click();
+ await expect(page.getByRole('dialog')).toBeVisible();
+ assert.equal(await page.locator('#navigation-dialog').evaluate(e=>getComputedStyle(e).transitionDuration),'0s');
+ await page.keyboard.press('Escape');await expect(page.locator('#navigation-dialog')).not.toBeVisible();
+ await context.close();
+ results.push({width,height,status:'PASS',checks:['fixed header while scrolled','initial content and anchor clearance','icon/panel animation','zero modal axe findings','dialog focus containment','Escape and close button','focus and scroll restoration','three rapid reopen/close cycles','local link navigation','reduced motion']});
+}
+await writeFile('docs/menu-test-results.json',JSON.stringify(results,null,2));console.log(results);await browser.close();

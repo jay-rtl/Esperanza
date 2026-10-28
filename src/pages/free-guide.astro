@@ -1,0 +1,12 @@
+---
+import {withBase} from '../utils/paths';
+import Layout from '../layouts/Layout.astro';
+import Form from '../components/Form.astro';
+import Botanical from '../components/Botanical.astro';
+const en=import.meta.env.PUBLIC_GUIDE_EN_URL;const es=import.meta.env.PUBLIC_GUIDE_ES_URL;
+const valid=(v:string|undefined)=>v?.startsWith('/guides/')&&!v.includes('..')&&!v.includes('?');
+---
+<Layout title="Your free guide — English & Español" description="Explore Esperanza’s free guide resource in English or Spanish. Resource availability and request information.">
+ <section class="section guide-heading"><div><p class="eyebrow">A resource for your journey</p><h1>A little clarity.<br/><em>At your pace.</em></h1><p class="lead">Get your free guide.</p><div class="language-label"><span>ENGLISH</span><span>ESPAÑOL</span></div><p class="small">Guide files and delivery are pending client approval.</p></div><div class="guide-art" aria-label="Illustrative guide cover concept; final guide file pending"><div class="guide-cover"><p class="eyebrow">Esperanza Coaching Collective</p><p class="guide-cover-title">A little<br/><em>clarity.</em></p><Botanical/><span>RESOURCE DESIGN PREVIEW</span></div><span class="guide-art-caption">Cover concept only · final resource pending</span></div></section>
+ <section class="section guide-request"><div><p class="eyebrow">Make space for understanding</p><h2>A resource.<br/><em>A moment for you.</em></h2><p>The original guide files and mailing-list workflow were not available. Guide content and delivery are pending client approval.</p>{valid(en)&&<a class="text-link" href={en?withBase(en):undefined} download>Download the English guide <span aria-hidden="true">↗</span></a>}{valid(es)&&<a class="text-link" href={es?withBase(es):undefined} download>Descargar la guía en español <span aria-hidden="true">↗</span></a>}</div><div class="form-panel"><div class="form-panel-heading"><p class="eyebrow">Choose your language</p><span aria-hidden="true">↗</span></div><Form kind="guide"/></div></section>
+</Layout>

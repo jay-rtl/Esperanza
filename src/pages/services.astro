@@ -1,0 +1,14 @@
+---
+import {withBase} from '../utils/paths';
+import Layout from '../layouts/Layout.astro';
+import Booking from '../components/Booking.astro';
+import Invitation from '../components/Invitation.astro';
+import {services,eligibility} from '../data/content';
+---
+<Layout title="Fertility education & couples coaching services" description="Explore autoimmune-informed fertility education, perinatal-aware couples coaching and lived-experience coaching with Michelle Savage.">
+ <section class="section services-heading"><div><p class="eyebrow">Thoughtful support for your next chapter</p><h1>Clarity. Connection.<br/><em>A way forward.</em></h1><p class="lead">Personalized guidance that blends science, emotional support, and real-life experience—so you can move forward with confidence, not confusion.</p><Booking/></div><div class="services-index"><span class="eyebrow">Explore the coaching</span>{services.map((s,i)=><a href={`#service-${i+1}`}><span>0{i+1}</span><span>{s.title}</span><span aria-hidden="true">↓</span></a>)}</div></section>
+ <section class="detailed-services" aria-label="Coaching services">{services.map((s,i)=><article id={`service-${i+1}`} class:list={['section','service-detail',`service-detail-${i+1}`]}><div class="service-chapter"><span class="large-index" aria-hidden="true">0{i+1}</span><p class="eyebrow">{['Understand the possibilities','Reconnect with each other','Move forward with support'][i]}</p></div><div class="service-detail-body"><h2>{s.title}</h2><p>{s.text}</p><a class="text-link" href={withBase("/contact/")}>Talk about your next step <span aria-hidden="true">↗</span></a></div></article>)}</section>
+ <section class="section eligibility"><div><p class="eyebrow">Is this support for you?</p><h2>Room for<br/><em>your journey.</em></h2><p>These are the program’s published eligibility details. A consultation is a chance to discuss whether this support is right for you.</p></div><ul>{eligibility.map(item=><li><span aria-hidden="true">↗</span>{item}</li>)}</ul></section>
+ <aside class="section scope-note"><p>This is a coaching program, not clinical therapy or medical care. Published service descriptions are preserved from the original website and require client review before launch. No health outcome is guaranteed.</p></aside>
+ <Invitation title="Let’s find" accent="your next step."/>
+</Layout>
